@@ -9,6 +9,7 @@ export function BottomNav() {
   const onHome = pathname === "/";
   const onLeaderboard = pathname.startsWith("/leaderboard");
   const onPortfolio = pathname.startsWith("/portfolio");
+  const onProfile = pathname.startsWith("/profile");
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-50 mx-auto h-[94px] w-full max-w-[402px] bg-[#060606] safe-pb">
@@ -93,14 +94,25 @@ export function BottomNav() {
 
       {/* Profile */}
       <Link
-        href="/"
+        href="/profile"
         className="no-tap-highlight absolute left-[334px] top-[20px]"
         aria-label="Profile"
       >
         <div className="relative h-[24px] w-[24px]">
-          <Image src="/icons/user.svg" alt="" fill className="object-contain opacity-80" />
+          <Image
+            src={onProfile ? "/icons/user-color.svg" : "/icons/user.svg"}
+            alt=""
+            fill
+            className="object-contain opacity-80"
+          />
         </div>
-        <div className="mt-[4px] -ml-[6px] w-[40px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70">
+        <div
+          className={
+            onProfile
+              ? "mt-[4px] -ml-[6px] w-[40px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#DA55FF]"
+              : "mt-[4px] -ml-[6px] w-[40px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70"
+          }
+        >
           Profile
         </div>
       </Link>
