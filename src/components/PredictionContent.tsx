@@ -1,13 +1,39 @@
 import Image from "next/image";
 import { IconBars, IconClock, IconRefresh } from "./icons";
 
-export function PredictionContent({ onToggle }: { onToggle?: () => void }) {
+export type PredictionCardData = {
+  question: string;
+  tokenLabel: string;
+  pool: string;
+  vibesPct: number;
+  backgroundSrc?: string;
+};
+
+export function PredictionContent({
+  onToggle,
+  data,
+}: {
+  onToggle?: () => void;
+  data?: PredictionCardData;
+}) {
+  const d: PredictionCardData =
+    data ??
+    ({
+      tokenLabel: "$PEPE",
+      question: "Will $PEPE break the ATH before midnight?",
+      pool: "$745,290",
+      vibesPct: 72,
+      backgroundSrc: "/icons/bg_prediction.png",
+    } satisfies PredictionCardData);
+
+  const questionParts = d.question.split(d.tokenLabel);
+
   return (
     <div className="relative h-full w-full text-white">
       {/* Background illustration */}
       <div className="absolute left-[-35px] top-[-3px] h-[290px] w-[413px]">
         <Image
-          src="/icons/bg_prediction.png"
+          src={d.backgroundSrc ?? "/icons/bg_prediction.png"}
           alt=""
           fill
           className="object-cover"
@@ -40,6 +66,7 @@ export function PredictionContent({ onToggle }: { onToggle?: () => void }) {
           e.stopPropagation();
           onToggle?.();
         }}
+        data-noswipe
         className="absolute left-[288px] top-[23px] grid h-[24px] w-[33px] place-items-center rounded-[50px] bg-[#A10FCA] shadow-[0px_4px_18.1px_0px_#A121C5]"
       >
         <IconRefresh className="h-[14px] w-[14px] text-white" />
@@ -52,8 +79,15 @@ export function PredictionContent({ onToggle }: { onToggle?: () => void }) {
 
       {/* Question */}
       <div className="absolute left-[32px] top-[316px] w-[283px] text-center font-ibm text-[30px] font-semibold leading-[31px]">
-        Will <span className="text-[#C531EE]">$PEPE</span> break the ATH before
-        midnight?
+        {questionParts.length === 2 ? (
+          <>
+            {questionParts[0]}
+            <span className="text-[#C531EE]">{d.tokenLabel}</span>
+            {questionParts[1]}
+          </>
+        ) : (
+          d.question
+        )}
       </div>
 
       {/* Progress bar */}
@@ -64,14 +98,14 @@ export function PredictionContent({ onToggle }: { onToggle?: () => void }) {
       <div className="absolute left-[25px] top-[444px] flex items-center gap-[6px]">
         <IconBars className="h-[17px] w-[17px] text-white/80" />
         <span className="font-ibm text-[12px] font-normal leading-[13.44px]">
-          POOL: $745,290
+          POOL: {d.pool}
         </span>
       </div>
 
       {/* Yes vibes pill */}
       <div className="absolute left-[218px] top-[442px] flex h-[24px] w-[101px] items-center justify-center rounded-[30px] bg-[#916EE94F]">
         <span className="font-ibm text-[12px] font-medium leading-[13.44px]">
-          72% YES VIBES
+          {d.vibesPct}% YES VIBES
         </span>
       </div>
     </div>

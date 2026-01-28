@@ -31,6 +31,7 @@ export function PredictionSwipeOverlay({
   const [buyYesOpen, setBuyYesOpen] = useState(false);
 
   const dragStartRef = useRef<{ x: number; baseTranslate: number } | null>(null);
+  const downCardRef = useRef<Stage | null>(null);
 
   const clampTranslate = (next: number) => {
     const min = centerLeft - 2 * (cardW + gap); // YES centered
@@ -43,6 +44,8 @@ export function PredictionSwipeOverlay({
     setTranslateX(centerLeft - stageIndex(next) * (cardW + gap));
   };
 
+  const stageTranslate = (s: Stage) => centerLeft - stageIndex(s) * (cardW + gap);
+
   const isPointInAnyCard = (x: number, y: number) => {
     // Cards live inside the track at y=top..top+cardH, with x determined by translateX.
     if (y < top || y > top + cardH) return false;
@@ -54,10 +57,25 @@ export function PredictionSwipeOverlay({
     return false;
   };
 
+  const cardAtPoint = (x: number, y: number): Stage | null => {
+    if (y < top || y > top + cardH) return null;
+    for (let i = 0; i < 3; i++) {
+      const left = translateX + i * (cardW + gap);
+      const right = left + cardW;
+      if (x >= left && x <= right) {
+        return i === 0 ? "no" : i === 1 ? "center" : "yes";
+      }
+    }
+    return null;
+  };
+
   const onPointerDown = (e: React.PointerEvent) => {
+    if (buyYesOpen) return;
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+
+    downCardRef.current = cardAtPoint(x, y);
 
     // If user taps/clicks outside the 3 cards, close overlay and return to the original page.
     if (!isPointInAnyCard(x, y)) {
@@ -72,31 +90,58 @@ export function PredictionSwipeOverlay({
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
+    if (buyYesOpen) return;
     const s = dragStartRef.current;
     if (!s) return;
     const dx = e.clientX - s.x;
     setDragDx(dx);
-    // Confirmed behavior: swipe RIGHT reveals YES.
-    // That means the cards move OPPOSITE the finger: drag right => translate decreases (moves track left).
-    setTranslateX(clampTranslate(s.baseTranslate - dx));
+    // Updated behavior: swipe LEFT chooses YES, swipe RIGHT chooses NO.
+    // The track follows the finger: drag left => translate decreases => YES comes into view.
+    setTranslateX(clampTranslate(s.baseTranslate + dx));
   };
 
   const onPointerUp = (e: React.PointerEvent) => {
+    if (buyYesOpen) return;
     const s = dragStartRef.current;
     dragStartRef.current = null;
     setDragging(false);
     if (!s) return;
     const dx = e.clientX - s.x;
-    const threshold = 90;
+    const clickThreshold = 10;
 
-    // With NO-left / YES-right and cards move opposite finger:
-    // swipe RIGHT => YES, swipe LEFT => NO
-    if (dx > threshold) snapToStage("yes");
-    else if (dx < -threshold) snapToStage("no");
-    else snapToStage(stage);
+    // Tap on YES card (when YES is active) opens the buy sheet.
+    // This avoids pointer-capture blocking click on desktop, and still allows swiping.
+    if (Math.abs(dx) < clickThreshold && downCardRef.current === "yes" && stage === "yes") {
+      setBuyYesOpen(true);
+      setDragDx(0);
+      return;
+    }
+
+    // Step-wise navigation (no skipping over center):
+    // Use the dragged translateX to decide the next stage so it feels consistent
+    // on both mobile and desktop.
+    const nextTranslate = clampTranslate(s.baseTranslate + dx);
+    const step = cardW + gap;
+    const commit = step * 0.33; // how far you need to drag to commit a step
+
+    if (stage === "no") {
+      // only NO -> CENTER
+      if (nextTranslate < stageTranslate("no") - commit) snapToStage("center");
+      else snapToStage("no");
+    } else if (stage === "center") {
+      // CENTER -> YES or NO
+      if (nextTranslate < stageTranslate("center") - commit) snapToStage("yes");
+      else if (nextTranslate > stageTranslate("center") + commit) snapToStage("no");
+      else snapToStage("center");
+    } else {
+      // YES -> CENTER
+      if (nextTranslate > stageTranslate("yes") + commit) snapToStage("center");
+      else snapToStage("yes");
+    }
 
     // Reset drag delta so hint/arrow revert to stage-based UI.
     setDragDx(0);
+    downCardRef.current = null;
   };
 
   return (
@@ -178,36 +223,29 @@ export function PredictionSwipeOverlay({
                 "linear-gradient(270deg, #000000 29.01%, #85F848 102.48%)",
             }}
           >
-            <button
-              type="button"
-              aria-label="Open buy YES"
-              onClick={() => setBuyYesOpen(true)}
-              className="grid h-full w-full place-items-center rounded-[38px] font-ibm text-[56px] font-semibold tracking-wide text-white"
-            >
+            <div className="grid h-full w-full place-items-center font-ibm text-[56px] font-semibold tracking-wide text-white">
               YES
-            </button>
+            </div>
           </div>
         </div>
 
         {/* Helper UI */}
         {(() => {
+          // Requested guidance:
+          // - center/no: swipe left progresses toward YES
+          // - yes: swipe right progresses toward NO
           const hint =
-            stage === "yes"
-              ? "Swipe left to choose NO"
-              : stage === "no"
-                ? "Swipe right to choose YES"
-                : "Swipe right to choose YES";
+            stage === "yes" ? "Swipe right to choose NO" : "Swipe left to choose YES";
 
-          const dir: "left" | "right" =
-            stage === "yes" ? "left" : "right";
+          const dir: "left" | "right" = stage === "yes" ? "right" : "left";
 
           return (
             <>
               <div className="absolute left-[177px] top-[679px] grid h-[44px] w-[44px] place-items-center rounded-full bg-[#3EB8FF]">
                 <IconArrowRight
                   className={
-                    (dragging ? (dragDx >= 0 ? "right" : "left") : dir) ===
-                      "right"
+                    ((dragging ? (dragDx >= 0 ? "right" : "left") : dir) ===
+                    "right")
                       ? "h-6 w-6 text-white"
                       : "h-6 w-6 -scale-x-100 text-white"
                   }

@@ -5,20 +5,109 @@ import { HomeHeader } from "@/components/HomeHeader";
 import { MarketTicker } from "@/components/MarketTicker";
 import { CategoryRowBase } from "@/components/CategoryRow";
 import { SearchBar } from "@/components/SearchBar";
-import { AnalyticsFrame } from "@/components/AnalyticsFrame";
-import { AnalyticsContent } from "@/components/AnalyticsContent";
-import { PredictionFrame } from "@/components/PredictionFrame";
-import { PredictionContent } from "@/components/PredictionContent";
+import { AnalyticsFrameBg, AnalyticsFrameTop } from "@/components/AnalyticsFrame";
+import { AnalyticsContent, type AnalyticsCardData } from "@/components/AnalyticsContent";
+import { PredictionFrameBg, PredictionFrameTop } from "@/components/PredictionFrame";
+import { PredictionContent, type PredictionCardData } from "@/components/PredictionContent";
 import { PredictionSwipeOverlay } from "@/components/PredictionSwipeOverlay";
+import { SwipeableCard } from "@/components/SwipeableCard";
 
-import { useState } from "react";
-import { useEffect, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useEffect } from "react";
+
+function makeRng(seed: number) {
+  // Deterministic PRNG (LCG) to keep render pure.
+  let s = seed >>> 0;
+  return () => {
+    s = (1664525 * s + 1013904223) >>> 0;
+    return s / 0xffffffff;
+  };
+}
+
+function buildDemoAnalytics(count: number, seed: number): AnalyticsCardData[] {
+  const rnd = makeRng(seed);
+  const pairs = ["PEPE/USDT BINARY", "BTC/USDT BINARY", "ETH/USDT BINARY"];
+  const titles = ["Pro Market Analytics", "Market Pulse", "Trend Scanner"];
+  return Array.from({ length: count }, () => {
+    const yes = 40 + Math.floor(rnd() * 21);
+    const no = 100 - yes;
+    const price = (200 + rnd() * 900).toFixed(2);
+    return {
+      pairLabel: pairs[Math.floor(rnd() * pairs.length)],
+      title: titles[Math.floor(rnd() * titles.length)],
+      price: `$${price}`,
+      noPct: no,
+      yesPct: yes,
+    };
+  });
+}
+
+function buildDemoPrediction(count: number, seed: number): PredictionCardData[] {
+  const rnd = makeRng(seed);
+  const tokens = ["$PEPE", "$BTC", "$ETH"];
+  return Array.from({ length: count }, () => {
+    const tokenLabel = tokens[Math.floor(rnd() * tokens.length)];
+    const questions = [
+      `Will ${tokenLabel} break the ATH before midnight?`,
+      `Will ${tokenLabel} go up in the next hour?`,
+      `Is ${tokenLabel} ending green today?`,
+    ];
+    const vibesPct = 50 + Math.floor(rnd() * 41);
+    const pool = `$${(
+      200000 + Math.floor(rnd() * 900000)
+    ).toLocaleString()}`;
+    return {
+      tokenLabel,
+      question: questions[Math.floor(rnd() * questions.length)],
+      pool,
+      vibesPct,
+      backgroundSrc: "/icons/bg_prediction.png",
+    };
+  });
+}
+
+function getSeedFromCookie() {
+  if (typeof document === "undefined") return null;
+  const m = document.cookie.match(/(?:^|; )demoSeed=(\d+)/);
+  return m ? Number(m[1]) : null;
+}
+
+function setSeedCookie(seed: number) {
+  if (typeof document === "undefined") return;
+  document.cookie = `demoSeed=${seed}; path=/; max-age=31536000; samesite=lax`;
+}
 
 export default function Home() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [predictionOpen, setPredictionOpen] = useState(false);
   const [swipeOpen, setSwipeOpen] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Track which dataset is shown for each face, so swiping changes the current face's content
+  // without accidentally switching to the other face.
+  const [analyticsIndex, setAnalyticsIndex] = useState(0);
+  const [predictionIndex, setPredictionIndex] = useState(0);
+
+  // Demo data seed must be identical on server & client to avoid hydration mismatch.
+  // We seed from a stable cookie if present; otherwise fall back to a constant.
+  // Client can later set the cookie (once) for future navigations.
+  const [seed] = useState(() => 123456);
+
+  useEffect(() => {
+    const existing = getSeedFromCookie();
+    if (existing != null) return;
+    // Set once for future loads. (We intentionally do NOT update state here.)
+    setSeedCookie(Math.floor(Date.now() % 1_000_000_000));
+  }, []);
+
+  const analyticsItems = useMemo(
+    () => buildDemoAnalytics(4, seed),
+    [seed],
+  );
+  const predictionItems = useMemo(
+    () => buildDemoPrediction(4, seed + 1337),
+    [seed],
+  );
 
   // Close search on Escape.
   useEffect(() => {
@@ -86,12 +175,43 @@ export default function Home() {
               Cancel the page's px-4 so those offsets line up, and keep enough top spacing to avoid overlap. */}
           <div className="mt-2 -mx-4">
             {predictionOpen ? (
-              <PredictionCard
-                onToggle={() => setPredictionOpen(false)}
-                onOpenSwipe={() => setSwipeOpen(true)}
-              />
+              <section className="relative h-[560px] w-full" aria-label="Prediction">
+                <PredictionFrameBg />
+                <SwipeableCard
+                  height={560}
+                  items={predictionItems}
+                  index={predictionIndex}
+                  onIndexChange={setPredictionIndex}
+                  onTap={() => setSwipeOpen(true)}
+                  render={(item) => (
+                    <PredictionFrameTop>
+                      <PredictionCard
+                        onToggle={() => setPredictionOpen(false)}
+                        onOpenSwipe={() => setSwipeOpen(true)}
+                        data={item}
+                      />
+                    </PredictionFrameTop>
+                  )}
+                />
+              </section>
             ) : (
-              <AnalyticsCard onToggle={() => setPredictionOpen(true)} />
+              <section className="relative h-[520px] w-full" aria-label="Analytics">
+                <AnalyticsFrameBg />
+                <SwipeableCard
+                  height={520}
+                  items={analyticsItems}
+                  index={analyticsIndex}
+                  onIndexChange={setAnalyticsIndex}
+                  render={(item) => (
+                    <AnalyticsFrameTop>
+                      <AnalyticsCard
+                        onToggle={() => setPredictionOpen(true)}
+                        data={item}
+                      />
+                    </AnalyticsFrameTop>
+                  )}
+                />
+              </section>
             )}
           </div>
         </div>
@@ -114,20 +234,26 @@ export default function Home() {
 // Asset cards replaced by MarketTicker
 // Category pills replaced by CategoryRow
 
-function AnalyticsCard({ onToggle }: { onToggle?: () => void }) {
-  return (
-    <AnalyticsFrame>
-      <AnalyticsContent onToggle={onToggle} />
-    </AnalyticsFrame>
-  );
+// AnalyticsCard / PredictionCard replaced by CardStack
+
+function AnalyticsCard({
+  onToggle,
+  data,
+}: {
+  onToggle?: () => void;
+  data: AnalyticsCardData;
+}) {
+  return <AnalyticsContent onToggle={onToggle} data={data} />;
 }
 
 function PredictionCard({
   onToggle,
   onOpenSwipe,
+  data,
 }: {
   onToggle?: () => void;
   onOpenSwipe: () => void;
+  data: PredictionCardData;
 }) {
   return (
     <div
@@ -140,9 +266,7 @@ function PredictionCard({
       className="cursor-pointer"
       aria-label="Open swipe chooser"
     >
-      <PredictionFrame>
-        <PredictionContent onToggle={onToggle} />
-      </PredictionFrame>
+      <PredictionContent onToggle={onToggle} data={data} />
     </div>
   );
 }

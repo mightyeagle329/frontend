@@ -1,17 +1,41 @@
 import { IconRefresh } from "./icons";
 
-export function AnalyticsContent({ onToggle }: { onToggle?: () => void }) {
+export type AnalyticsCardData = {
+  pairLabel: string;
+  title: string;
+  price: string;
+  noPct: number;
+  yesPct: number;
+};
+
+export function AnalyticsContent({
+  onToggle,
+  data,
+}: {
+  onToggle?: () => void;
+  data?: AnalyticsCardData;
+}) {
+  const d: AnalyticsCardData =
+    data ??
+    ({
+      pairLabel: "PEPE/USDT BINARY",
+      title: "Pro Market Analytics",
+      price: "$450.12",
+      noPct: 47,
+      yesPct: 53,
+    } satisfies AnalyticsCardData);
+
   return (
     <div className="relative h-full w-full text-white">
       {/* Title block */}
       <div
         className="absolute left-[27px] top-[23px] font-ibm text-[16px] font-normal leading-[20.16px] tracking-[0.11em] text-white/60"
       >
-        PEPE/USDT BINARY
+        {d.pairLabel}
       </div>
 
       <div className="absolute left-[27px] top-[46px] font-ibm text-[25px] font-semibold leading-[26px]">
-        Pro Market Analytics
+        {d.title}
       </div>
 
       {/* Reverse button: 33x24 @ (288,23) */}
@@ -19,6 +43,7 @@ export function AnalyticsContent({ onToggle }: { onToggle?: () => void }) {
         type="button"
         aria-label="Refresh"
         onClick={onToggle}
+        data-noswipe
         className="absolute left-[288px] top-[23px] grid h-[24px] w-[33px] place-items-center rounded-[50px] shadow-[0px_4px_18.1px_0px_#A121C5]"
       >
         <div
@@ -39,7 +64,7 @@ export function AnalyticsContent({ onToggle }: { onToggle?: () => void }) {
       </div>
 
       <div className="absolute left-[118px] top-[127px] w-[111px] text-center font-ibm text-[30px] font-semibold leading-[31px]">
-        $450.12
+        {d.price}
       </div>
 
       {/* Chart area: 274x111.7 @ (37,165) (no visible border in design) */}
@@ -85,13 +110,13 @@ export function AnalyticsContent({ onToggle }: { onToggle?: () => void }) {
       {/* 47/53 pills */}
       <div className="absolute left-[20px] top-[340px] flex h-[47px] w-[154px] items-center justify-center rounded-[26px] bg-white/10">
         <span className="font-ibm text-[17px] font-semibold leading-[18px]">
-          47% (No)
+          {d.noPct}% (No)
         </span>
       </div>
 
       <div className="absolute left-[179px] top-[340px] flex h-[47px] w-[145px] items-center justify-center rounded-[26px] bg-white/10">
         <span className="font-ibm text-[17px] font-semibold leading-[18px]">
-          53% (Yes)
+          {d.yesPct}% (Yes)
         </span>
       </div>
 
