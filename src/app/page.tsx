@@ -3,7 +3,6 @@
 import { BottomNav } from "@/components/BottomNav";
 import { HomeHeader } from "@/components/HomeHeader";
 import { MarketTicker } from "@/components/MarketTicker";
-import { CategoryRowBase } from "@/components/CategoryRow";
 import { SearchBar } from "@/components/SearchBar";
 import { AnalyticsFrameBg, AnalyticsFrameTop } from "@/components/AnalyticsFrame";
 import { AnalyticsContent, type AnalyticsCardData } from "@/components/AnalyticsContent";
@@ -78,7 +77,6 @@ function setSeedCookie(seed: number) {
 }
 
 export default function Home() {
-  const [searchOpen, setSearchOpen] = useState(false);
   const [predictionOpen, setPredictionOpen] = useState(false);
   const [swipeOpen, setSwipeOpen] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement | null>(null);
@@ -109,29 +107,7 @@ export default function Home() {
     [seed],
   );
 
-  // Close search on Escape.
-  useEffect(() => {
-    if (!searchOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSearchOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [searchOpen]);
-
-  // Close search when clicking outside of the big search bar.
-  useEffect(() => {
-    if (!searchOpen) return;
-    const onPointerDown = (e: PointerEvent) => {
-      const el = searchContainerRef.current;
-      if (!el) return;
-      if (!el.contains(e.target as Node)) {
-        setSearchOpen(false);
-      }
-    };
-    window.addEventListener("pointerdown", onPointerDown);
-    return () => window.removeEventListener("pointerdown", onPointerDown);
-  }, [searchOpen]);
+  // Search is now always visible; keep ref for future enhancements.
 
   return (
     <div
@@ -149,26 +125,13 @@ export default function Home() {
         </div>
 
         <div className="px-4">
-          {!searchOpen ? (
-            <div className="mt-4">
-              <MarketTicker />
-            </div>
-          ) : null}
+          <div className="mt-4">
+            <MarketTicker />
+          </div>
 
-          {/* CategoryRow is defined with exact px-based insets; cancel the page's px-4 so its edges align to the frame */}
-          <div className="mt-4 -mx-4">
-            {searchOpen ? (
-              <>
-                <div className="px-[18px]" ref={searchContainerRef}>
-                  <SearchBar />
-                </div>
-                <div className="mt-3">
-                  <CategoryRowBase hideSearch />
-                </div>
-              </>
-            ) : (
-              <CategoryRowBase onSearch={() => setSearchOpen(true)} />
-            )}
+          {/* Replace category pills with always-visible big search bar */}
+          <div className="mt-4 -mx-4 px-[18px]" ref={searchContainerRef}>
+            <SearchBar />
           </div>
 
           {/* Analytics frame uses absolute left offsets from the 402px frame.

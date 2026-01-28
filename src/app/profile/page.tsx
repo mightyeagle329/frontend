@@ -2,10 +2,15 @@
 
 import { BottomNav } from "@/components/BottomNav";
 import { ProfileHeader } from "@/components/ProfileHeader";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 
 export default function ProfilePage() {
   const [range, setRange] = useState<"1w" | "1m">("1w");
+  const { disconnect } = useWallet();
+  const [logoutStatus, setLogoutStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
 
   return (
     <div className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden bg-black pb-24 text-white">
@@ -128,9 +133,26 @@ export default function ProfilePage() {
           {/* Log out */}
           <button
             type="button"
+            onClick={async () => {
+              try {
+                setLogoutStatus("loading");
+                await disconnect();
+                setLogoutStatus("success");
+                window.setTimeout(() => setLogoutStatus("idle"), 1500);
+              } catch {
+                setLogoutStatus("error");
+                window.setTimeout(() => setLogoutStatus("idle"), 2000);
+              }
+            }}
             className="mt-4 w-full rounded-[16px] bg-white/5 px-4 py-4 text-center font-ibm text-[14px] font-semibold"
           >
-            Log out
+            {logoutStatus === "loading"
+              ? "Logging out…"
+              : logoutStatus === "success"
+                ? "Logged out"
+                : logoutStatus === "error"
+                  ? "Failed to log out"
+                  : "Log out"}
           </button>
         </div>
       </main>
