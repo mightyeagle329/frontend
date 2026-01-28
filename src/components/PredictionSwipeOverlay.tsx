@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { PredictionContent } from "./PredictionContent";
 import { IconArrowRight } from "./icons";
+import { BuyYesSheet } from "./BuyYesSheet";
 
 type Stage = "center" | "yes" | "no";
 
@@ -27,6 +28,7 @@ export function PredictionSwipeOverlay({
   const [dragging, setDragging] = useState(false);
   const [dragDx, setDragDx] = useState(0);
   const [translateX, setTranslateX] = useState(() => centerLeft - 1 * (cardW + gap));
+  const [buyYesOpen, setBuyYesOpen] = useState(false);
 
   const dragStartRef = useRef<{ x: number; baseTranslate: number } | null>(null);
 
@@ -118,6 +120,13 @@ export function PredictionSwipeOverlay({
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
       >
+        {/* YES buy sheet (opens when tapping the YES card) */}
+        {buyYesOpen ? (
+          <div className="absolute inset-0 z-[70] bg-black/70 backdrop-blur-sm">
+            <BuyYesSheet onClose={() => setBuyYesOpen(false)} />
+          </div>
+        ) : null}
+
         {/* Track: NO | MAIN | YES */}
         <div
           className={
@@ -169,9 +178,14 @@ export function PredictionSwipeOverlay({
                 "linear-gradient(270deg, #000000 29.01%, #85F848 102.48%)",
             }}
           >
-            <div className="grid h-full w-full place-items-center font-ibm text-[56px] font-semibold tracking-wide text-white">
+            <button
+              type="button"
+              aria-label="Open buy YES"
+              onClick={() => setBuyYesOpen(true)}
+              className="grid h-full w-full place-items-center rounded-[38px] font-ibm text-[56px] font-semibold tracking-wide text-white"
+            >
               YES
-            </div>
+            </button>
           </div>
         </div>
 
