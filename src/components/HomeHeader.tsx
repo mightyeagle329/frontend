@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { IconLightning } from "./icons";
+import { SolanaBalancePill } from "./SolanaBalancePill";
 
 export function HomeHeader() {
   return (
@@ -37,22 +37,9 @@ export function HomeHeader() {
         </div>
       </div>
 
-      {/* Right balance: 116x31 @ (259,19) */}
-      <div className="absolute left-[259px] top-[19px] flex h-[31px] w-[116px] items-center gap-2 rounded-[16px] border border-[#2C2C2C] bg-black/30 px-[10px] backdrop-blur">
-        {/* icon: 21x18 @ (269,25)
-            Note: some SVG exports include large transparent bounds; we scale up slightly to match Figma's apparent size.
-        */}
-        <div className="relative h-[18px] w-[21px] overflow-visible">
-          <Image
-            src="/icons/balance.svg"
-            alt="Balance"
-            fill
-            className="object-contain origin-center scale-[2.5]"
-          />
-        </div>
-        <span className="font-ibm text-[16px] font-medium leading-[16px] text-white">
-          $4,206.91
-        </span>
+      {/* Right wallet pill: 116x31 @ (259,19) */}
+      <div className="absolute left-[259px] top-[19px]">
+        <SolanaBalancePill />
       </div>
     </header>
   );
