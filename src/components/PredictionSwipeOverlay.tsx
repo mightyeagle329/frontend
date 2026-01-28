@@ -1,18 +1,69 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { PredictionContent } from "./PredictionContent";
+import type { ReactNode } from "react";
 import { IconArrowRight } from "./icons";
 import { BuyYesSheet } from "./BuyYesSheet";
+
+type BgLayer = {
+  left: number;
+  top: number;
+  w: number;
+  h: number;
+  r: number;
+  color: string;
+  opacity: number;
+};
+
+function LayerBg({
+  back,
+  mid,
+}: {
+  back: BgLayer;
+  mid: BgLayer;
+}) {
+  return (
+    <>
+      <div
+        className="absolute"
+        style={{
+          left: back.left,
+          top: back.top,
+          width: back.w,
+          height: back.h,
+          borderRadius: back.r,
+          background: back.color,
+          opacity: back.opacity,
+        }}
+      />
+      <div
+        className="absolute"
+        style={{
+          left: mid.left,
+          top: mid.top,
+          width: mid.w,
+          height: mid.h,
+          borderRadius: mid.r,
+          background: mid.color,
+          opacity: mid.opacity,
+        }}
+      />
+    </>
+  );
+}
 
 type Stage = "center" | "yes" | "no";
 
 export function PredictionSwipeOverlay({
   onClose,
-  onToggle,
+  frame,
+  center,
 }: {
   onClose: () => void;
-  onToggle: () => void;
+  /** Which frame background offsets to use for the 3-layer stack behind cards. */
+  frame: "analytics" | "prediction";
+  /** The content rendered inside the MAIN (center) card. */
+  center: ReactNode;
 }) {
   // Carousel layout within the 402px app frame
   const frameW = 402;
@@ -45,6 +96,19 @@ export function PredictionSwipeOverlay({
   };
 
   const stageTranslate = (s: Stage) => centerLeft - stageIndex(s) * (cardW + gap);
+
+  // Background layer geometry relative to the top card.
+  // Derived from AnalyticsFrameBg/PredictionFrameBg offsets vs the top layer.
+  const bg =
+    frame === "analytics"
+      ? {
+          back: { left: 37, top: 0, w: 327, h: 467, r: 43, color: "#141426", opacity: 0.9 },
+          mid: { left: 12, top: 13, w: 341, h: 487, r: 43, color: "#2C4A65", opacity: 1 },
+        }
+      : {
+          back: { left: -24, top: 0, w: 327, h: 467, r: 43, color: "#171E2E", opacity: 1 },
+          mid: { left: -13, top: 13, w: 341, h: 487, r: 43, color: "#2C4A65", opacity: 1 },
+        };
 
   const isPointInAnyCard = (x: number, y: number) => {
     // Cards live inside the track at y=top..top+cardH, with x determined by translateX.
@@ -186,45 +250,64 @@ export function PredictionSwipeOverlay({
           }}
         >
           {/* NO */}
-          <div
-            className="absolute left-0 top-0 h-[495px] w-[343px] rounded-[38px]"
-            style={{
-              background:
-                "linear-gradient(90deg, #000000 29.01%, #E83D36 102.48%)",
-            }}
-          >
-            <div className="grid h-full w-full place-items-center font-ibm text-[56px] font-semibold tracking-wide text-white">
-              NO
+          <div className="absolute left-0 top-0 h-[495px] w-[343px]">
+            <div className="relative h-full w-full overflow-visible">
+              <LayerBg back={bg.back} mid={bg.mid} />
+              <div
+                className="absolute left-0 top-0 h-[495px] w-[343px] rounded-[38px]"
+                style={{
+                  background:
+                    "linear-gradient(90deg, #000000 29.01%, #E83D36 102.48%)",
+                }}
+              >
+                <div className="grid h-full w-full place-items-center font-ibm text-[56px] font-semibold tracking-wide text-white">
+                  NO
+                </div>
+              </div>
             </div>
           </div>
 
           {/* MAIN */}
           <div
-            className="absolute top-0 h-[495px] w-[343px] rounded-[38px] p-[4px]"
-            style={{
-              left: `${cardW + gap}px`,
-              background:
-                "linear-gradient(145.87deg, #3EB8FF 10.14%, #69AAE3 45.99%, #BA22E5 78.12%)",
-              boxShadow:
-                "inset 0px 2px 0.2px rgba(255,255,255,0.25), inset 0px 4px 52.6px rgba(255,255,255,0.31), 0px 4px 136.3px rgba(133,248,72,1)",
-            }}
+            className="absolute top-0 h-[495px] w-[343px]"
+            style={{ left: `${cardW + gap}px` }}
           >
-            <div className="relative h-full w-full overflow-hidden rounded-[34px] bg-[#05011C]">
-              <PredictionContent onToggle={onToggle} />
+            <div className="relative h-full w-full overflow-visible">
+              <LayerBg back={bg.back} mid={bg.mid} />
+              <div
+                className="absolute left-0 top-0 h-[495px] w-[343px] rounded-[38px] p-[4px]"
+                style={{
+                  background:
+                    "linear-gradient(145.87deg, #3EB8FF 10.14%, #69AAE3 45.99%, #BA22E5 78.12%)",
+                  boxShadow:
+                    "inset 0px 2px 0.2px rgba(255,255,255,0.25), inset 0px 4px 52.6px rgba(255,255,255,0.31), 0px 4px 136.3px rgba(133,248,72,1)",
+                }}
+              >
+                <div className="relative h-full w-full overflow-hidden rounded-[34px] bg-[#05011C]">
+                  {center}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* YES */}
           <div
-            className="absolute top-0 h-[495px] w-[343px] rounded-[38px]"
-            style={{
-              left: `${2 * (cardW + gap)}px`,
-              background:
-                "linear-gradient(270deg, #000000 29.01%, #85F848 102.48%)",
-            }}
+            className="absolute top-0 h-[495px] w-[343px]"
+            style={{ left: `${2 * (cardW + gap)}px` }}
           >
-            <div className="grid h-full w-full place-items-center font-ibm text-[56px] font-semibold tracking-wide text-white">
-              YES
+            <div className="relative h-full w-full overflow-visible">
+              <LayerBg back={bg.back} mid={bg.mid} />
+              <div
+                className="absolute left-0 top-0 h-[495px] w-[343px] rounded-[38px]"
+                style={{
+                  background:
+                    "linear-gradient(270deg, #000000 29.01%, #85F848 102.48%)",
+                }}
+              >
+                <div className="grid h-full w-full place-items-center font-ibm text-[56px] font-semibold tracking-wide text-white">
+                  YES
+                </div>
+              </div>
             </div>
           </div>
         </div>

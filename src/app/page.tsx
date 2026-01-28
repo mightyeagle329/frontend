@@ -107,6 +107,8 @@ export default function Home() {
     [seed],
   );
 
+  const openSwipe = () => setSwipeOpen(true);
+
   // Search is now always visible; keep ref for future enhancements.
 
   return (
@@ -131,7 +133,7 @@ export default function Home() {
 
           {/* Replace category pills with always-visible big search bar */}
           <div className="mt-4 -mx-4 px-[18px]" ref={searchContainerRef}>
-            <SearchBar />
+            <SearchBar autoFocus={false} />
           </div>
 
           {/* Analytics frame uses absolute left offsets from the 402px frame.
@@ -145,12 +147,12 @@ export default function Home() {
                   items={predictionItems}
                   index={predictionIndex}
                   onIndexChange={setPredictionIndex}
-                  onTap={() => setSwipeOpen(true)}
+                  onTap={openSwipe}
                   render={(item) => (
                     <PredictionFrameTop>
                       <PredictionCard
                         onToggle={() => setPredictionOpen(false)}
-                        onOpenSwipe={() => setSwipeOpen(true)}
+                        onOpenSwipe={openSwipe}
                         data={item}
                       />
                     </PredictionFrameTop>
@@ -169,6 +171,7 @@ export default function Home() {
                     <AnalyticsFrameTop>
                       <AnalyticsCard
                         onToggle={() => setPredictionOpen(true)}
+                        onOpenSwipe={openSwipe}
                         data={item}
                       />
                     </AnalyticsFrameTop>
@@ -185,7 +188,14 @@ export default function Home() {
       {swipeOpen ? (
         <PredictionSwipeOverlay
           onClose={() => setSwipeOpen(false)}
-          onToggle={() => setPredictionOpen((v) => !v)}
+          frame={predictionOpen ? "prediction" : "analytics"}
+          center={
+            predictionOpen ? (
+              <PredictionContent onToggle={() => setPredictionOpen(false)} />
+            ) : (
+              <AnalyticsContent onToggle={() => setPredictionOpen(true)} />
+            )
+          }
         />
       ) : null}
     </div>
@@ -201,12 +211,28 @@ export default function Home() {
 
 function AnalyticsCard({
   onToggle,
+  onOpenSwipe,
   data,
 }: {
   onToggle?: () => void;
+  onOpenSwipe: () => void;
   data: AnalyticsCardData;
 }) {
-  return <AnalyticsContent onToggle={onToggle} data={data} />;
+  // Clicking the analytics card should open the YES/NO overlay (same as prediction face).
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onOpenSwipe}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") onOpenSwipe();
+      }}
+      className="cursor-pointer"
+      aria-label="Open swipe chooser"
+    >
+      <AnalyticsContent onToggle={onToggle} data={data} />
+    </div>
+  );
 }
 
 function PredictionCard({

@@ -42,7 +42,11 @@ export function AnalyticsContent({
       <button
         type="button"
         aria-label="Refresh"
-        onClick={onToggle}
+        onClick={(e) => {
+          // Prevent the card tap handler from opening the YES/NO overlay.
+          e.stopPropagation();
+          onToggle?.();
+        }}
         data-noswipe
         className="absolute left-[288px] top-[23px] grid h-[24px] w-[33px] place-items-center rounded-[50px] shadow-[0px_4px_18.1px_0px_#A121C5]"
       >
