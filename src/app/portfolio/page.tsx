@@ -1,6 +1,7 @@
 "use client";
 
 import { BottomNav } from "@/components/BottomNav";
+import { DepositModal } from "@/components/DepositModal";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -9,6 +10,8 @@ export default function PortfolioPage() {
   const [subTab, setSubTab] = useState<
     "position" | "open" | "closed" | "transactions"
   >("position");
+
+  const [depositOpen, setDepositOpen] = useState(false);
 
   const tabsWrapRef = useRef<HTMLDivElement | null>(null);
   const tabRefs = useRef<Record<"trades" | "watchlist", HTMLButtonElement | null>>({
@@ -111,6 +114,7 @@ export default function PortfolioPage() {
         <button
           type="button"
           className="absolute left-[194px] top-[189px] h-[53px] w-[178px] rounded-[16px] bg-[#A10FCA] shadow-[0px_2px_32.8px_0px_#A10FCAEB]"
+          onClick={() => setDepositOpen(true)}
         >
           <span className="font-ibm text-[17px] font-bold leading-[20px]">
             Deposit
@@ -199,6 +203,8 @@ export default function PortfolioPage() {
       </div>
 
       <BottomNav />
+
+      {depositOpen ? <DepositModal onClose={() => setDepositOpen(false)} /> : null}
     </div>
   );
 }
