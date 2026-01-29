@@ -31,12 +31,13 @@ export function PredictionContent({
   return (
     <div className="relative h-full w-full text-white">
       {/* Background illustration */}
-      <div className="absolute left-[-35px] top-[-3px] h-[290px] w-[413px]">
+      <div className="pointer-events-none absolute left-[-35px] top-[-3px] h-[290px] w-[413px] select-none">
         <Image
           src={d.backgroundSrc ?? "/icons/bg_prediction.png"}
           alt=""
           fill
-          className="object-cover"
+          draggable={false}
+          className="object-cover select-none"
           priority
         />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(5,1,28,0)_0%,#05011C_100%)]" />
