@@ -2,6 +2,7 @@
 
 import { BottomNav } from "@/components/BottomNav";
 import { DepositModal } from "@/components/DepositModal";
+import { WithdrawModal } from "@/components/WithdrawModal";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,6 +13,7 @@ export default function PortfolioPage() {
   >("position");
 
   const [depositOpen, setDepositOpen] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
 
   const tabsWrapRef = useRef<HTMLDivElement | null>(null);
   const tabRefs = useRef<Record<"trades" | "watchlist", HTMLButtonElement | null>>({
@@ -104,6 +106,7 @@ export default function PortfolioPage() {
         <button
           type="button"
           className="absolute left-[32px] top-[189px] h-[53px] w-[154px] rounded-[16px] bg-[#FFFFFF12]"
+          onClick={() => setWithdrawOpen(true)}
         >
           <span className="font-ibm text-[17px] font-bold leading-[20px]">
             Withdraw
@@ -205,6 +208,7 @@ export default function PortfolioPage() {
       <BottomNav />
 
       {depositOpen ? <DepositModal onClose={() => setDepositOpen(false)} /> : null}
+      {withdrawOpen ? <WithdrawModal onClose={() => setWithdrawOpen(false)} /> : null}
     </div>
   );
 }

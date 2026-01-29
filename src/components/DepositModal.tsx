@@ -6,6 +6,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { SOLANA_TOKENS } from "@/lib/solanaTokens";
 import { useSplTokenBalance } from "@/hooks/useSplTokenBalance";
+import { useLocalTokenAccountBalance } from "@/hooks/useLocalTokenAccountBalance";
 
 function formatAmount(amount: number, digits = 4) {
   return amount.toLocaleString(undefined, {
@@ -33,6 +34,9 @@ export function DepositModal({ onClose }: { onClose: () => void }) {
     mint: token.mint,
     decimals: token.decimals,
   });
+
+  // Demo “in-app” account balance (separate from wallet balance)
+  const account = useLocalTokenAccountBalance({ symbol: token.symbol, initial: 0 });
 
   const walletBalance = balance ?? 0;
 
@@ -93,7 +97,6 @@ export function DepositModal({ onClose }: { onClose: () => void }) {
                 <span className="font-ibm text-[14px]">
                   {loading ? "…" : formatAmount(walletBalance, 4)}
                 </span>
-                <span className="text-white/40">⌄</span>
               </div>
             </div>
 
@@ -171,7 +174,7 @@ export function DepositModal({ onClose }: { onClose: () => void }) {
         ) : (
           <>
             <div className="mt-2 font-ibm text-[14px] text-white/60">
-              Account Balance: {formatAmount(walletBalance, 4)} {token.symbol}
+              Account Balance: {formatAmount(account.balance, 4)} {token.symbol}
             </div>
 
             <div className="mt-8 flex flex-col items-center">
@@ -220,8 +223,11 @@ export function DepositModal({ onClose }: { onClose: () => void }) {
               type="button"
               disabled={!canConfirm}
               onClick={() => {
-                // This is a UI-only prototype.
-                // Real deposit would send USDT to a program / custody address.
+                // In a real app, Deposit would be an on-chain transfer to a
+                // custody / program address + backend crediting.
+                // For now (no backend), we simulate crediting the in-app account
+                // and do NOT move funds on-chain.
+                account.deposit(parsedAmount);
                 onClose();
               }}
               className={
