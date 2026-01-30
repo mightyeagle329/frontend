@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, IBM_Plex_Sans_Condensed } from "next/font/google";
 import "./globals.css";
 import { SolanaWalletProvider } from "@/providers/SolanaWalletProvider";
+import { WalletSignInPrompt } from "@/components/WalletSignInPrompt";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexSansCondensed.variable} antialiased min-h-dvh bg-[#05060b] text-white`}
       >
-        <SolanaWalletProvider>{children}</SolanaWalletProvider>
+        <SolanaWalletProvider>
+          {children}
+          <WalletSignInPrompt />
+        </SolanaWalletProvider>
       </body>
     </html>
   );
