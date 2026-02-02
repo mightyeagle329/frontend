@@ -106,7 +106,7 @@ export default function LeaderboardPage() {
                 <div className="relative mt-[6px] h-px w-[366px] bg-white/25">
                   {/* Selected underline: change color under selected tab */}
                   <div
-                    className="absolute left-0 top-0 h-px bg-[#A10FCA] transition-[left,width] duration-300 ease-out"
+                    className="absolute left-0 top-0 h-px bg-white transition-[left,width] duration-300 ease-out"
                     style={{
                       left: indicator.left,
                       width: indicator.width,
@@ -182,7 +182,7 @@ function Pill({ children, active }: { children: string; active?: boolean }) {
       type="button"
       className={
         active
-          ? "rounded-full bg-[#A10FCA] px-4 py-2 font-ibm text-[13px] text-white"
+          ? "rounded-full bg-[#E96023] px-4 py-2 font-ibm text-[13px] text-white"
           : "rounded-full bg-white/10 px-4 py-2 font-ibm text-[13px] text-white/85"
       }
     >

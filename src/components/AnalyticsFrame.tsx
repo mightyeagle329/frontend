@@ -16,11 +16,11 @@ export function AnalyticsFrame({ children }: { children?: ReactNode }) {
 export function AnalyticsFrameBg() {
   return (
     <>
-      {/* Final/back layer: 327x467, r=43, left 72 */}
-      <div className="absolute left-[72px] top-[0px] h-[467px] w-[327px] rounded-[43px] bg-[#141426] opacity-90" />
+      {/* Final/back layer */}
+      <div className="absolute left-[72px] top-[0px] h-[467px] w-[327px] rounded-[43px] bg-[#181818]" />
 
-      {/* Middle layer: 341x487, bg #2C4A65, r=43, left 47 */}
-      <div className="absolute left-[47px] top-[13px] h-[487px] w-[341px] rounded-[43px] bg-[#2C4A65]" />
+      {/* Middle layer */}
+      <div className="absolute left-[47px] top-[13px] h-[487px] w-[341px] rounded-[43px] bg-[#3B3B3B]" />
     </>
   );
 }
@@ -34,20 +34,31 @@ export function AnalyticsFrameTop({
 }) {
   return (
     <div
-      className="absolute left-[35px] top-[24px] h-[495px] w-[343px] rounded-[38px] p-[4px]"
+      className="absolute left-[35px] top-[24px] h-[495px] w-[343px] rounded-[38px]"
       style={{
+        // 4px border with gradient (design update)
         background:
-          "linear-gradient(145.87deg, #3EB8FF 10.14%, #69AAE3 45.99%, #BA22E5 78.12%)",
+          "linear-gradient(#060606, #060606) padding-box, linear-gradient(145.87deg, #3EB8FF 10.14%, #69AAE3 45.99%, #E96023 78.12%) border-box",
+        border: "4px solid transparent",
         ...style,
       }}
     >
       <div
-        className="h-full w-full overflow-hidden rounded-[34px] bg-[#05011C]"
+        className="relative h-full w-full overflow-hidden rounded-[34px] bg-[#060606]"
         style={{
           boxShadow:
-            "inset 0px 2px 0.2px rgba(255,255,255,0.25), inset 0px 4px 52.6px rgba(255,255,255,0.31)",
+            "inset 0px 0px 0.2px #FFFFFF40, inset 0px 4px 52.6px #FFFFFF26",
         }}
       >
+        {/* Bottom edge highlight under the border (subtle band) */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[10px]"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.14) 55%, rgba(255,255,255,0) 100%)",
+          }}
+        />
         {children}
       </div>
     </div>

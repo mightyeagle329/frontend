@@ -115,8 +115,10 @@ export default function Home() {
     <div
       className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden pb-24"
       style={{
-        backgroundImage:
-          "radial-gradient(900px 420px at 50% -120px, rgba(45, 212, 191, 0.20), transparent 60%), radial-gradient(700px 480px at 70% 45%, rgba(217, 70, 239, 0.18), transparent 60%), radial-gradient(900px 560px at 20% 80%, rgba(56, 189, 248, 0.10), transparent 55%), radial-gradient(circle at 20px 40px, rgba(255,255,255,0.18) 1px, transparent 2px), radial-gradient(circle at 200px 130px, rgba(255,255,255,0.12) 1px, transparent 2px), radial-gradient(circle at 120px 240px, rgba(255,255,255,0.10) 1px, transparent 2px), radial-gradient(circle at 320px 320px, rgba(255,255,255,0.10) 1px, transparent 2px)"
+        // Use bg.gif behind the whole page (bottom nav remains solid due to fixed bg).
+        backgroundImage: "url(/icons/bg.gif)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.75))]" />
@@ -167,6 +169,7 @@ export default function Home() {
                   items={analyticsItems}
                   index={analyticsIndex}
                   onIndexChange={setAnalyticsIndex}
+                  onTap={openSwipe}
                   render={(item) => (
                     <AnalyticsFrameTop>
                       <AnalyticsCard
@@ -188,7 +191,6 @@ export default function Home() {
       {swipeOpen ? (
         <PredictionSwipeOverlay
           onClose={() => setSwipeOpen(false)}
-          frame={predictionOpen ? "prediction" : "analytics"}
           center={
             predictionOpen ? (
               <PredictionContent onToggle={() => setPredictionOpen(false)} />

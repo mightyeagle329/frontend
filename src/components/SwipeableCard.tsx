@@ -84,6 +84,15 @@ export function SwipeableCard<T>({
     return !target.closest("[data-noswipe]");
   };
 
+  const triggerTap = (target: EventTarget | null) => {
+    // Desktop fallback: if pointer-events are finicky, allow a normal click to open overlay.
+    // Respect data-noswipe so buttons (like Refresh) don't trigger the overlay.
+    if (!onTap) return;
+    if (!allowSwipeFromTarget(target)) return;
+    if (dragging || animating) return;
+    onTap();
+  };
+
   const onPointerDown = (e: React.PointerEvent) => {
     if (!allowSwipeFromTarget(e.target)) return;
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
@@ -189,6 +198,7 @@ export function SwipeableCard<T>({
   const underScale = 0.96 + 0.04 * progress;
   const underY = 14 - 14 * progress;
   const underOpacity = 0.85 + 0.15 * progress;
+  const underVisible = dragging && Math.abs(dx) > tapThreshold;
 
   return (
     <div
@@ -199,6 +209,12 @@ export function SwipeableCard<T>({
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerCancel}
       onLostPointerCapture={onLostPointerCapture}
+      onClick={(e) => triggerTap(e.target)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") triggerTap(e.target);
+      }}
+      role={onTap ? "button" : undefined}
+      tabIndex={onTap ? 0 : undefined}
       aria-label="Swipeable card"
     >
       <div className="relative overflow-hidden">
@@ -209,18 +225,20 @@ export function SwipeableCard<T>({
           </div>
         ) : null}
 
-        {/* Under card (revealed as you swipe) */}
-        <div
-          className="absolute inset-0"
-          style={{
-            transform: `translate3d(0, ${underY}px, 0) scale(${underScale})`,
-            opacity: underOpacity,
-            transition,
-            zIndex: 1,
-          }}
-        >
-          {underContent}
-        </div>
+        {/* Under card: only show WHILE actively swiping (avoid always-looking-like a 2nd card) */}
+        {underVisible ? (
+          <div
+            className="absolute inset-0"
+            style={{
+              transform: `translate3d(0, ${underY}px, 0) scale(${underScale})`,
+              opacity: underOpacity,
+              transition,
+              zIndex: 1,
+            }}
+          >
+            {underContent}
+          </div>
+        ) : null}
 
         {/* Top card */}
         <div

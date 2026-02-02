@@ -48,12 +48,15 @@ export function AnalyticsContent({
           onToggle?.();
         }}
         data-noswipe
-        className="absolute left-[288px] top-[23px] grid h-[24px] w-[33px] place-items-center rounded-[50px] shadow-[0px_4px_18.1px_0px_#A121C5]"
+        className="absolute left-[288px] top-[27px] grid h-[24px] w-[33px] place-items-center rounded-[50px]"
       >
         <div
-          className="grid h-full w-full place-items-center rounded-[49px] bg-[#A10FCA]"
+          className="grid h-full w-full place-items-center rounded-[50px]"
           style={{
-            border: "none",
+            // 1px border with gradient (design update)
+            background:
+              "linear-gradient(#E96023, #E96023) padding-box, linear-gradient(133.81deg, #FFFFFF -4.79%, #E96023 94.8%) border-box",
+            border: "1px solid transparent",
           }}
         >
           <IconRefresh className="h-[14px] w-[14px] text-white" />
@@ -71,8 +74,16 @@ export function AnalyticsContent({
         {d.price}
       </div>
 
-      {/* Chart area: 274x111.7 @ (37,165) (no visible border in design) */}
-      <div className="absolute left-[37px] top-[165px] h-[111.717px] w-[274px] rounded-[18px]" />
+      {/* Chart area bg gradient (design update) */}
+      <div
+        className="absolute left-[37px] top-[165px] h-[111.717px] w-[274px] rounded-[18px]"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(233, 96, 35, 0.51) 0%, #1C1C1C 82.21%)",
+          filter: "blur(0px)",
+          opacity: 0.9,
+        }}
+      />
 
       {/* Chart line (approx) */}
       <svg
@@ -85,7 +96,7 @@ export function AnalyticsContent({
       >
         <path
           d="M8 70 C 30 28, 48 88, 70 58 C 86 36, 102 72, 118 52 C 136 30, 150 88, 168 54 C 186 22, 202 92, 218 56 C 234 18, 250 68, 266 40"
-          stroke="#A10FCA"
+          stroke="#E96023"
           strokeWidth="2"
         />
       </svg>

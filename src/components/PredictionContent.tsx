@@ -68,9 +68,18 @@ export function PredictionContent({
           onToggle?.();
         }}
         data-noswipe
-        className="absolute left-[288px] top-[23px] grid h-[24px] w-[33px] place-items-center rounded-[50px] bg-[#A10FCA] shadow-[0px_4px_18.1px_0px_#A121C5]"
+        className="absolute left-[288px] top-[27px] grid h-[24px] w-[33px] place-items-center rounded-[50px]"
       >
-        <IconRefresh className="h-[14px] w-[14px] text-white" />
+        <div
+          className="grid h-full w-full place-items-center rounded-[50px]"
+          style={{
+            background:
+              "linear-gradient(#E96023, #E96023) padding-box, linear-gradient(133.81deg, #FFFFFF -4.79%, #E96023 94.8%) border-box",
+            border: "1px solid transparent",
+          }}
+        >
+          <IconRefresh className="h-[14px] w-[14px] text-white" />
+        </div>
       </button>
 
       {/* PREDICT & EARN */}
@@ -83,7 +92,7 @@ export function PredictionContent({
         {questionParts.length === 2 ? (
           <>
             {questionParts[0]}
-            <span className="text-[#C531EE]">{d.tokenLabel}</span>
+            <span className="text-[#E96023]">{d.tokenLabel}</span>
             {questionParts[1]}
           </>
         ) : (
@@ -92,8 +101,8 @@ export function PredictionContent({
       </div>
 
       {/* Progress bar */}
-      <div className="absolute left-[27px] top-[401px] h-[8px] w-[292px] rounded-[30px] bg-[#A10FCA30]" />
-      <div className="absolute left-[27px] top-[401px] h-[8px] w-[231.415px] rounded-[30px] bg-[#A10FCA] shadow-[0px_0px_10.1px_0px_#A10FCA]" />
+      <div className="absolute left-[27px] top-[401px] h-[8px] w-[292px] rounded-[30px] bg-[#1C1C1C]" />
+      <div className="absolute left-[27px] top-[401px] h-[8px] w-[231.415px] rounded-[30px] bg-[#E96023] shadow-[0px_0px_10.1px_0px_#E9602378]" />
 
       {/* Pool row */}
       <div className="absolute left-[25px] top-[444px] flex items-center gap-[6px]">

@@ -30,7 +30,7 @@ export function BottomNav() {
         <div
           className={
             onHome
-              ? "mt-[3px] w-[37px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#DA55FF]"
+              ? "mt-[3px] w-[37px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#FE7C43]"
               : "mt-[3px] w-[37px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70"
           }
         >
@@ -59,7 +59,7 @@ export function BottomNav() {
         <div
           className={
             onLeaderboard
-              ? "mt-[4px] -ml-[27px] w-[78px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#DA55FF]"
+              ? "mt-[4px] -ml-[27px] w-[78px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#FE7C43]"
               : "mt-[4px] -ml-[27px] w-[78px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70"
           }
         >
@@ -84,7 +84,7 @@ export function BottomNav() {
         <div
           className={
             onPortfolio
-              ? "mt-[4px] -ml-[14px] w-[52px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#DA55FF]"
+              ? "mt-[4px] -ml-[14px] w-[52px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#FE7C43]"
               : "mt-[4px] -ml-[14px] w-[52px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70"
           }
         >
@@ -109,7 +109,7 @@ export function BottomNav() {
         <div
           className={
             onProfile
-              ? "mt-[4px] -ml-[6px] w-[40px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#DA55FF]"
+              ? "mt-[4px] -ml-[6px] w-[40px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#FE7C43]"
               : "mt-[4px] -ml-[6px] w-[40px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70"
           }
         >

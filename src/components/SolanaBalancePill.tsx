@@ -3,20 +3,15 @@
 import Image from "next/image";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { useSolBalance } from "@/hooks/useSolBalance";
+import { useWalletAuth } from "@/hooks/useWalletAuth";
+import { useAuthSession } from "@/providers/AuthSessionProvider";
 import { useState } from "react";
 
-function formatUsd(amount: number) {
-  return amount.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}
-
 export function SolanaBalancePill() {
-  const { connected, connecting } = useWallet();
+  const { connected, connecting, publicKey } = useWallet();
   const { setVisible } = useWalletModal();
-  const { balance, loading } = useSolBalance();
+  const { needsSignIn } = useWalletAuth();
+  const { session } = useAuthSession();
 
   const [connectError, setConnectError] = useState<string | null>(null);
 
@@ -25,14 +20,12 @@ export function SolanaBalancePill() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any)?.phantom?.solana?.isPhantom;
 
-  // NOTE: Design shows USD. For now we show SOL amount formatted like "$4,206.91".
-  // You can later provide SOL->USD price feed and we will convert.
   const displayValue = connected
-    ? loading
-      ? "…"
-      : balance == null
-        ? "--"
-        : formatUsd(balance)
+    ? session?.address
+      ? `${session.address.slice(0, 4)}…${session.address.slice(-4)}`
+      : publicKey
+        ? `${publicKey.toBase58().slice(0, 4)}…${publicKey.toBase58().slice(-4)}`
+        : "--"
     : "Connect";
 
   // NOTE: the balance hook uses publicKey; if connect fails you will stay on "Connect".
@@ -69,7 +62,9 @@ export function SolanaBalancePill() {
 
       <span className="truncate font-ibm text-[16px] font-medium leading-[16px] text-white">
         {connected
-          ? `$${displayValue}`
+          ? needsSignIn
+            ? "Sign"
+            : displayValue
           : connecting
             ? "…"
             : connectError

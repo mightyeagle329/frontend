@@ -53,12 +53,19 @@ export default function PortfolioPage() {
     >
       {/* Header card (pixel-based) */}
       <div className="relative h-[320px]">
-        {/* Rectangle: 380x237 @ (12,63) */}
-        <div className="absolute left-[12px] top-[63px] h-[237px] w-[380px] rounded-[16px] bg-[#151515]" />
+        {/* Rectangle: 366x230 @ (19,63), r=16, border=3 w/ gradient */}
+        <div
+          className="absolute left-[19px] top-[63px] h-[230px] w-[366px] rounded-[16px]"
+          style={{
+            background:
+              "linear-gradient(#151515, #151515) padding-box, linear-gradient(145.87deg, #3EB8FF 10.14%, #69AAE3 45.99%, #E96023 78.12%) border-box",
+            border: "3px solid transparent",
+          }}
+        />
 
         {/* balance icon (match HomeHeader visual scale) */}
         <div
-          className="absolute left-[32px] top-[86px]"
+          className="absolute left-[48px] top-[91px]"
           style={{ filter: "drop-shadow(0px 1px 13.6px #3EB8FF)" }}
         >
           <div className="relative h-[18px] w-[21px] overflow-visible text-[#3EB8FF]">
@@ -72,17 +79,17 @@ export default function PortfolioPage() {
         </div>
 
         {/* BALANCE SPOT text @ (58,86) */}
-        <div className="absolute left-[58px] top-[86px] h-[20px] w-[107px] whitespace-nowrap font-ibm text-[15px] font-normal leading-[20px] tracking-[0.07em] text-[#3EB8FF]">
+        <div className="absolute left-[74px] top-[91px] h-[20px] w-[107px] whitespace-nowrap font-ibm text-[15px] font-normal leading-[20px] tracking-[0.07em] text-[#3EB8FF]">
           BALANCE SPOT
         </div>
 
         {/* Amount @ (244,81) */}
-        <div className="absolute left-[244px] top-[81px] h-[38px] w-[126px] text-right font-ibm text-[29px] font-semibold leading-[29px]">
+        <div className="absolute left-[244px] top-[86px] h-[38px] w-[126px] text-right font-ibm text-[29px] font-semibold leading-[29px]">
           $4,206.91
         </div>
 
         {/* usdt.png: 44x44 @ (30,119) */}
-        <div className="absolute left-[30px] top-[119px] h-[44px] w-[44px]">
+        <div className="absolute left-[45px] top-[134px] h-[44px] w-[44px]">
           <Image
             src="/icons/usdt.png"
             alt=""
@@ -93,19 +100,19 @@ export default function PortfolioPage() {
         </div>
 
         {/* USDT label @ (86,121) */}
-        <div className="absolute left-[86px] top-[121px] h-[20px] w-[35px] font-ibm text-[15px] font-bold leading-[20px]">
+        <div className="absolute left-[101px] top-[136px] h-[20px] w-[35px] font-ibm text-[15px] font-bold leading-[20px]">
           USDT
         </div>
 
         {/* 1,240.50 USDT @ (86,141), opacity 0.4 */}
-        <div className="absolute left-[86px] top-[141px] h-[20px] w-[93px] font-ibm text-[15px] font-normal leading-[20px] text-white/40">
+        <div className="absolute left-[106px] top-[156px] h-[25px] w-[93px] font-ibm text-[15px] font-normal leading-[20px] text-white/40">
           1,240.50 USDT
         </div>
 
-        {/* Withdraw button: 154x53 @ (32,189) */}
+        {/* Withdraw button: 146x53 @ (41,215) */}
         <button
           type="button"
-          className="absolute left-[32px] top-[189px] h-[53px] w-[154px] rounded-[16px] bg-[#FFFFFF12]"
+          className="absolute left-[41px] top-[215px] h-[53px] w-[146px] rounded-[16px] bg-[#FFFFFF12]"
           onClick={() => setWithdrawOpen(true)}
         >
           <span className="font-ibm text-[17px] font-bold leading-[20px]">
@@ -113,27 +120,26 @@ export default function PortfolioPage() {
           </span>
         </button>
 
-        {/* Deposit button: 178x53 @ (194,189) */}
+        {/* Deposit button: 169x53 @ (194,215) */}
         <button
           type="button"
-          className="absolute left-[194px] top-[189px] h-[53px] w-[178px] rounded-[16px] bg-[#A10FCA] shadow-[0px_2px_32.8px_0px_#A10FCAEB]"
+          className="absolute left-[194px] top-[215px] h-[53px] w-[169px] rounded-[16px] bg-[#DE8B66] shadow-[0px_2px_32.8px_0px_#E9602378]"
           onClick={() => setDepositOpen(true)}
         >
           <span className="font-ibm text-[17px] font-bold leading-[20px]">
             Deposit
           </span>
         </button>
-
-        {/* View History log @ (153,260) */}
-        <div className="absolute left-[153px] top-[260px] h-[20px] w-[99px] text-center font-ibm text-[15px] font-normal leading-[20px] text-white/40">
-          View History log
-        </div>
       </div>
 
       {/* Top tabs (Trades / WatchList) with colored underline like Leaderboard */}
       <div className="mt-1 px-4">
-        <div className="relative w-full border-b border-white/10 pb-3">
-          <div ref={tabsWrapRef} className="relative flex gap-6">
+        <div className="relative w-full pb-3">
+          <div
+            ref={tabsWrapRef}
+            className="relative flex items-start gap-8"
+            style={{ width: 354, height: 31, marginLeft: 10 }}
+          >
             <button
               type="button"
               onClick={() => setTopTab("trades")}
@@ -163,9 +169,12 @@ export default function PortfolioPage() {
               WatchList
             </button>
 
-            {/* Selected underline aligned to selected word */}
+            {/* Full line: 354px, 1px white @ 20% */}
+            <div className="absolute left-0 top-[31px] h-px w-[354px] bg-white/20" />
+
+            {/* Selected underline aligned to selected word (like Leaderboard) */}
             <div
-              className="absolute -bottom-px h-px bg-[#A10FCA] transition-[left,width] duration-300 ease-out"
+              className="absolute left-0 top-[31px] h-px bg-white transition-[left,width] duration-300 ease-out"
               style={{ left: indicator.left, width: indicator.width }}
             />
           </div>
@@ -228,7 +237,7 @@ function SubPill({
       onClick={onClick}
       className={
         active
-          ? "whitespace-nowrap rounded-full bg-[#A10FCA] px-4 py-2 font-ibm text-[13px] text-white"
+          ? "whitespace-nowrap rounded-full bg-[#E96023] px-4 py-2 font-ibm text-[13px] text-white"
           : "whitespace-nowrap rounded-full bg-white/10 px-4 py-2 font-ibm text-[13px] text-white/85"
       }
     >
