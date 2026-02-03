@@ -13,7 +13,7 @@ export default function ProfilePage() {
   >("idle");
 
   return (
-    <div className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden bg-black pb-24 text-white">
+    <div className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden pb-24 text-white">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.75))]" />
 
       <main className="relative">
@@ -188,7 +188,7 @@ function Pill({
       onClick={onClick}
       className={
         active
-          ? "rounded-full bg-[#A10FCA] px-4 py-2 font-ibm text-[13px] text-white"
+          ? "rounded-full bg-[#E96023] px-4 py-2 font-ibm text-[13px] text-white"
           : "rounded-full bg-white/10 px-4 py-2 font-ibm text-[13px] text-white/85"
       }
     >

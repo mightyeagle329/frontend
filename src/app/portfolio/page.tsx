@@ -49,7 +49,7 @@ export default function PortfolioPage() {
 
   return (
     <div
-      className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden bg-black pb-24 text-white"
+      className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden pb-24 text-white"
     >
       {/* Header card (pixel-based) */}
       <div className="relative h-[320px]">

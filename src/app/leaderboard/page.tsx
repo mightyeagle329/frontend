@@ -40,10 +40,6 @@ export default function LeaderboardPage() {
   return (
     <div
       className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden pb-24"
-      style={{
-        backgroundImage:
-          "radial-gradient(900px 420px at 50% -120px, rgba(45, 212, 191, 0.20), transparent 60%), radial-gradient(700px 480px at 70% 45%, rgba(217, 70, 239, 0.18), transparent 60%), radial-gradient(900px 560px at 20% 80%, rgba(56, 189, 248, 0.10), transparent 55%)",
-      }}
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.75))]" />
 

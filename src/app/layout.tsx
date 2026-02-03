@@ -34,7 +34,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexSansCondensed.variable} antialiased min-h-dvh bg-[#05060b] text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexSansCondensed.variable} antialiased min-h-dvh text-white`}
+        style={{
+          backgroundImage: "url(/icons/bg.gif)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       >
         <SolanaWalletProvider>
           <AuthSessionProvider>
