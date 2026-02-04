@@ -420,6 +420,8 @@ export function DepositModal({ onClose }: { onClose: () => void }) {
                 </svg>
               </button>
 
+              <div className="mt-4" />
+
               <button
                 type="button"
                 onClick={() => setStep("deposit")}

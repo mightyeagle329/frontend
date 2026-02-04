@@ -4,15 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export function BottomNav() {
+export function BottomNav({ variant = "default" }: { variant?: "default" | "dark" }) {
   const pathname = usePathname();
   const onHome = pathname === "/";
   const onLeaderboard = pathname.startsWith("/leaderboard");
   const onPortfolio = pathname.startsWith("/portfolio");
   const onProfile = pathname.startsWith("/profile");
+  const bgClass = variant === "dark" ? "bg-[#08071C]" : "bg-[#060606]";
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-50 mx-auto h-[94px] w-full max-w-[402px] bg-[#060606] safe-pb">
+    <nav className={`fixed inset-x-0 bottom-0 z-50 mx-auto h-[94px] w-full max-w-[402px] safe-pb ${bgClass}`}>
       {/* Home */}
       <Link
         href="/"
@@ -30,7 +31,7 @@ export function BottomNav() {
         <div
           className={
             onHome
-              ? "mt-[3px] w-[37px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#FE7C43]"
+              ? "mt-[3px] w-[37px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#4DE6B8]"
               : "mt-[3px] w-[37px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70"
           }
         >
@@ -59,7 +60,7 @@ export function BottomNav() {
         <div
           className={
             onLeaderboard
-              ? "mt-[4px] -ml-[27px] w-[78px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#FE7C43]"
+              ? "mt-[4px] -ml-[27px] w-[78px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#4DE6B8]"
               : "mt-[4px] -ml-[27px] w-[78px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70"
           }
         >
@@ -84,7 +85,7 @@ export function BottomNav() {
         <div
           className={
             onPortfolio
-              ? "mt-[4px] -ml-[14px] w-[52px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#FE7C43]"
+              ? "mt-[4px] -ml-[14px] w-[52px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#4DE6B8]"
               : "mt-[4px] -ml-[14px] w-[52px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70"
           }
         >
@@ -109,7 +110,7 @@ export function BottomNav() {
         <div
           className={
             onProfile
-              ? "mt-[4px] -ml-[6px] w-[40px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#FE7C43]"
+              ? "mt-[4px] -ml-[6px] w-[40px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-[#4DE6B8]"
               : "mt-[4px] -ml-[6px] w-[40px] text-center font-ibm text-[15px] font-normal leading-[16.8px] text-white/70"
           }
         >

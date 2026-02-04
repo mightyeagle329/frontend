@@ -193,7 +193,7 @@ export function PredictionSwipeOverlay({
                 className="absolute left-0 top-0 h-[495px] w-[343px] rounded-[38px]"
                 style={{
                   background:
-                    "linear-gradient(90deg, #000000 29.01%, #E83D36 102.48%)",
+                    "linear-gradient(90deg, #E83D36 0%, #E83D36 100%)",
                 }}
               >
                 <div className="grid h-full w-full place-items-center font-ibm text-[56px] font-semibold tracking-wide text-white">
@@ -213,7 +213,7 @@ export function PredictionSwipeOverlay({
                 className="absolute left-0 top-0 h-[495px] w-[343px] rounded-[38px]"
                 style={{
                   background:
-                    "linear-gradient(#060606, #060606) padding-box, linear-gradient(145.87deg, #3EB8FF 10.14%, #69AAE3 45.99%, #E96023 78.12%) border-box",
+                    "linear-gradient(#060606, #060606) padding-box, linear-gradient(138.53deg, #24233E 3.27%, #6A64FF 20.73%, #1D1A57 45.42%, #C3C1FB 69.11%, #423F8F 97.18%) border-box",
                   border: "4px solid transparent",
                   boxShadow:
                     "inset 0px 2px 0.2px #FFFFFF40, inset 0px 4px 52.6px #FFFFFF26, 0px 4px 136.3px rgba(133,248,72,1)",
@@ -236,7 +236,7 @@ export function PredictionSwipeOverlay({
                 className="absolute left-0 top-0 h-[495px] w-[343px] rounded-[38px]"
                 style={{
                   background:
-                    "linear-gradient(270deg, #000000 29.01%, #85F848 102.48%)",
+                    "linear-gradient(270deg, #85F848 0%, #85F848 100%)",
                 }}
               >
                 <div className="grid h-full w-full place-items-center font-ibm text-[56px] font-semibold tracking-wide text-white">

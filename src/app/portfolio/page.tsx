@@ -50,85 +50,136 @@ export default function PortfolioPage() {
   return (
     <div
       className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden pb-24 text-white"
+      style={{ backgroundColor: "#0F0D3F" }}
     >
-      {/* Header card (pixel-based) */}
+      {/* Header card (pixel-based, matching Figma Group 62) */}
       <div className="relative h-[320px]">
-        {/* Rectangle: 366x230 @ (19,63), r=16, border=3 w/ gradient */}
+        {/* Outer gradient card (Rectangle 33) */}
         <div
-          className="absolute left-[19px] top-[63px] h-[230px] w-[366px] rounded-[16px]"
+          className="glow-card-border absolute left-[18px] top-[66px] h-[230px] w-[366px] rounded-[33px]"
           style={{
             background:
-              "linear-gradient(#151515, #151515) padding-box, linear-gradient(145.87deg, #3EB8FF 10.14%, #69AAE3 45.99%, #E96023 78.12%) border-box",
-            border: "3px solid transparent",
+              "linear-gradient(156.82deg, #0B092A 47.69%, #090635 107.22%) padding-box, linear-gradient(138.53deg, #24233E 3.27%, #6A64FF 20.73%, #1D1A57 45.42%, #C3C1FB 69.11%, #423F8F 97.18%) border-box",
+            border: "2px solid transparent",
+            boxShadow: "1px -6px 72.5px 0px #A39FF21F inset",
           }}
         />
 
-        {/* balance icon (match HomeHeader visual scale) */}
+        {/* Inner radial glow layer (Rectangle 37) */}
         <div
-          className="absolute left-[48px] top-[91px]"
+          className="absolute left-[21px] top-[70px] h-[224px] w-[360px] rounded-[31px]"
+          style={{
+            background:
+              "radial-gradient(99.66% 121.87% at 12.22% 8.48%, rgba(119,0,255,0.46) 0%, rgba(21,19,62,0) 100%)",
+            border: "1px solid transparent",
+            boxShadow:
+              "0px 35px 46.3px 0px #4742B475, 0px 0px 0px 1px transparent",
+          }}
+        />
+
+        {/* Plus-lighter background texture (header-card.jpg) */}
+        <Image
+          src="/icons/header-card.jpg"
+          alt="Balance card glow"
+          width={359}
+          height={202}
+          className="pointer-events-none absolute left-[22px] top-[92px] h-[202px] w-[359px] object-cover"
+          style={{
+            opacity: 0.31,
+            mixBlendMode: "plus-lighter",
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
+          }}
+        />
+
+        {/* Horizontal divider line under header (Line 14) */}
+        <div
+          className="pointer-events-none absolute left-[20px] top-[137px] h-px w-[362px]"
+          style={{
+            background:
+              "linear-gradient(90deg, #6862F8 0%, #948FFF 29.62%, #FFFFFF 45.45%, #1B1849 71.16%, #A9A6E2 100%)",
+          }}
+        />
+
+        {/* balance icon (balance-green.svg) */}
+        <div
+          className="absolute left-[42px] top-[92px]"
           style={{ filter: "drop-shadow(0px 1px 13.6px #3EB8FF)" }}
         >
-          <div className="relative h-[18px] w-[21px] overflow-visible text-[#3EB8FF]">
+          <div className="relative h-[18px] w-[21px] overflow-visible text-[#4DE6B8]">
             <Image
               src="/icons/balance.svg"
-              alt=""
+              alt="Balance spot"
               fill
-              className="object-contain origin-center scale-[2.5]"
+              className="origin-center scale-[2.2] object-contain"
             />
           </div>
         </div>
 
-        {/* BALANCE SPOT text @ (58,86) */}
-        <div className="absolute left-[74px] top-[91px] h-[20px] w-[107px] whitespace-nowrap font-ibm text-[15px] font-normal leading-[20px] tracking-[0.07em] text-[#3EB8FF]">
+        {/* BALANCE SPOT text */}
+        <div className="absolute left-[68px] top-[92px] h-[20px] w-[140px] whitespace-nowrap font-ibm text-[15px] font-normal leading-[20px] tracking-[0.07em] text-[#4DE6B8]">
           BALANCE SPOT
         </div>
 
-        {/* Amount @ (244,81) */}
-        <div className="absolute left-[244px] top-[86px] h-[38px] w-[126px] text-right font-ibm text-[29px] font-semibold leading-[29px]">
+        {/* Amount */}
+        <div className="absolute left-[236px] top-[82px] h-[38px] w-[126px] text-right font-ibm text-[29px] font-semibold leading-[29px] text-[#E1E0FF]">
           $4,206.91
         </div>
 
-        {/* usdt.png: 44x44 @ (30,119) */}
-        <div className="absolute left-[45px] top-[134px] h-[44px] w-[44px]">
+        {/* usdt.png token icon */}
+        <div className="absolute left-[44px] top-[154px] h-[36px] w-[36px] rounded-full">
           <Image
             src="/icons/usdt.png"
-            alt=""
-            width={44}
-            height={44}
-            className="h-full w-full object-contain"
+            alt="USDT"
+            width={36}
+            height={36}
+            className="h-full w-full rounded-full object-contain shadow-[0px_4px_5.7px_0px_#FFFFFF87_inset]"
           />
         </div>
 
-        {/* USDT label @ (86,121) */}
-        <div className="absolute left-[101px] top-[136px] h-[20px] w-[35px] font-ibm text-[15px] font-bold leading-[20px]">
+        {/* USDT label */}
+        <div className="absolute left-[96px] top-[152px] h-[20px] w-[60px] font-ibm text-[15px] font-bold leading-[20px] text-[#E1E0FF]">
           USDT
         </div>
 
-        {/* 1,240.50 USDT @ (86,141), opacity 0.4 */}
-        <div className="absolute left-[106px] top-[156px] h-[25px] w-[93px] font-ibm text-[15px] font-normal leading-[20px] text-white/40">
+        {/* 1,240.50 USDT */}
+        <div className="absolute left-[96px] top-[172px] h-[20px] w-[120px] font-ibm text-[15px] font-normal leading-[20px] text-[#8682DF]">
           1,240.50 USDT
         </div>
 
-        {/* Withdraw button: 146x53 @ (41,215) */}
-        <button
-          type="button"
-          className="absolute left-[41px] top-[215px] h-[53px] w-[146px] rounded-[16px] bg-[#FFFFFF12]"
-          onClick={() => setWithdrawOpen(true)}
-        >
-          <span className="font-ibm text-[17px] font-bold leading-[20px]">
+        {/* Withdraw button (Group 61) with orbiting light effect */}
+        <div className="absolute left-[44px] top-[216px] h-[53px] w-[156px]">
+          <div className="withdraw-orbit pointer-events-none absolute inset-0 rounded-[16px]" />
+          <button
+            type="button"
+            className="glow-button-border relative z-10 h-full w-full rounded-[16px] font-ibm text-[17px] font-bold leading-[20px] text-[#C7D3FF]"
+            style={{
+              background:
+                "linear-gradient(180deg, #27055A 7.55%, #260657 100%) padding-box, linear-gradient(180deg, #6F13BF 0%, #936CE2 100%) border-box",
+              border: "2px solid transparent",
+              boxShadow:
+                "0px 10px 17.5px -3px #3C0A88, inset 0px 3px 18px 9px #5727F294, 0px 1px 2.3px 0px #00000040",
+            }}
+            onClick={() => setWithdrawOpen(true)}
+          >
             Withdraw
-          </span>
-        </button>
+          </button>
+        </div>
 
-        {/* Deposit button: 169x53 @ (194,215) */}
+        {/* Deposit button (Group 60) */}
         <button
           type="button"
-          className="absolute left-[194px] top-[215px] h-[53px] w-[169px] rounded-[16px] bg-[#DE8B66] shadow-[0px_2px_32.8px_0px_#E9602378]"
+          className="glow-button-border absolute left-[206px] top-[216px] h-[53px] w-[156px] rounded-[16px] font-ibm text-[17px] font-bold leading-[20px] text-[#FFF2B9]"
+          style={{
+            background:
+              "linear-gradient(180deg, #F68504 7.55%, #942700 100%)",
+            border: "2px solid #FEE233",
+            boxShadow:
+              "0px 0px 17.5px -3px #FEE233, inset 0px 3px 9.2px 9px #FF5E00E5, 0px 1px 2.3px 0px #00000040",
+          }}
           onClick={() => setDepositOpen(true)}
         >
-          <span className="font-ibm text-[17px] font-bold leading-[20px]">
-            Deposit
-          </span>
+          Deposit
         </button>
       </div>
 
@@ -214,7 +265,7 @@ export default function PortfolioPage() {
         <PositionCardNo />
       </div>
 
-      <BottomNav />
+      <BottomNav variant="dark" />
 
       {depositOpen ? <DepositModal onClose={() => setDepositOpen(false)} /> : null}
       {withdrawOpen ? <WithdrawModal onClose={() => setWithdrawOpen(false)} /> : null}
@@ -237,8 +288,20 @@ function SubPill({
       onClick={onClick}
       className={
         active
-          ? "whitespace-nowrap rounded-full bg-[#E96023] px-4 py-2 font-ibm text-[13px] text-white"
-          : "whitespace-nowrap rounded-full bg-white/10 px-4 py-2 font-ibm text-[13px] text-white/85"
+          ? "flex h-[37px] min-w-[79px] items-center justify-center whitespace-nowrap rounded-[12.5px] px-4 font-ibm text-[13px] text-white"
+          : "flex h-[37px] min-w-[79px] items-center justify-center whitespace-nowrap rounded-[12.5px] px-4 font-ibm text-[13px] text-white/85"
+      }
+      style={
+        active
+          ? {
+              background:
+                // Match visual style of Withdraw button, scaled to pill size
+                "linear-gradient(180deg, #4C2BC3 0%, #2B145E 100%) padding-box, linear-gradient(180deg, #6F13BF 0%, #936CE2 100%) border-box",
+              border: "1px solid transparent",
+              boxShadow:
+                "0px 6px 14px -2px #3C0A88, inset 0px 3px 12px 5px #5727F294",
+            }
+          : { background: "#1B1942" }
       }
     >
       {label}

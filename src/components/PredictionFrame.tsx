@@ -36,7 +36,7 @@ export function PredictionFrameTop({
       className="absolute left-[35px] top-[24px] h-[495px] w-[343px] rounded-[38px]"
       style={{
         background:
-          "linear-gradient(#060606, #060606) padding-box, linear-gradient(145.87deg, #3EB8FF 10.14%, #69AAE3 45.99%, #E96023 78.12%) border-box",
+          "linear-gradient(#060606, #060606) padding-box, linear-gradient(138.53deg, #24233E 3.27%, #6A64FF 20.73%, #1D1A57 45.42%, #C3C1FB 69.11%, #423F8F 97.18%) border-box",
         border: "4px solid transparent",
         ...style,
       }}

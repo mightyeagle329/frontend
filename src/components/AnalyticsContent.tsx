@@ -66,7 +66,7 @@ export function AnalyticsContent({
       {/* Price trend panel: 304x205 @ (20,92) */}
       <div className="absolute left-[20px] top-[92px] h-[205px] w-[304px] rounded-[26px] bg-white/5" />
 
-      <div className="absolute left-[112px] top-[103px] w-[119px] whitespace-nowrap text-center font-ibm text-[13px] font-normal leading-[16.38px] tracking-[0.11em] text-white/60">
+      <div className="absolute left-[86px] top-[103px] w-[170px] text-center font-ibm text-[13px] font-normal leading-[16.38px] tracking-[0.11em] text-white/60">
         24H PRICE TREND
       </div>
 
@@ -102,7 +102,7 @@ export function AnalyticsContent({
       </svg>
 
       {/* Axis labels */}
-      <div className="absolute left-[37px] top-[270px] w-[45px] text-center font-ibm text-[10px] font-normal leading-[12.6px] tracking-[0.11em] text-white/60">
+      <div className="absolute left-[37px] top-[270px] text-center font-ibm text-[10px] font-normal leading-[12.6px] tracking-[0.11em] text-white/60">
         24H AGO
       </div>
       <div className="absolute left-[163px] top-[270px] w-[20px] text-center font-ibm text-[10px] font-normal leading-[12.6px] tracking-[0.11em] text-white/60">

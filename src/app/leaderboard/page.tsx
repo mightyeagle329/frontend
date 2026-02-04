@@ -40,6 +40,7 @@ export default function LeaderboardPage() {
   return (
     <div
       className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden pb-24"
+      style={{ backgroundColor: "#0F0D3F" }}
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.75))]" />
 
@@ -150,14 +151,14 @@ export default function LeaderboardPage() {
               <Row key={r.rank} rank={r.rank} name={r.name} vol={r.vol} />
             ))}
 
-            <div className="mt-4 flex items-center justify-between rounded-full bg-white/5 px-4 py-3 ring-1 ring-white/10">
+            <div className="mt-4 flex h-[45px] w-[380px] items-center justify-between rounded-[16px] bg-white/10 px-4" style={{marginLeft: "-4px"}}>
               <div className="flex items-center gap-3">
                 <div className="w-[28px] text-center font-ibm text-[14px] text-white/70">
                   137
                 </div>
                 <div className="h-7 w-7 rounded-full bg-gradient-to-br from-fuchsia-500/60 to-cyan-400/40" />
                 <div className="font-ibm text-[14px] text-white">You</div>
-                <div className="font-ibm text-[14px] font-medium text-[#49F347]">
+                <div className="font-ibm text-[14px] font-medium text-[#4DE6B8]">
                   +346% ↑
                 </div>
               </div>
@@ -167,7 +168,7 @@ export default function LeaderboardPage() {
         </div>
       </main>
 
-      <BottomNav />
+      <BottomNav variant="dark" />
     </div>
   );
 }

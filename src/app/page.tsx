@@ -114,6 +114,7 @@ export default function Home() {
   return (
     <div
       className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden pb-24"
+      style={{ backgroundColor: "#0F0D3F" }}
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.75))]" />
 
