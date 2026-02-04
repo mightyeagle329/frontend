@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function LeaderboardPage() {
   const [tab, setTab] = useState<"volume" | "pnl" | "points">("volume");
+  const [timeframe, setTimeframe] = useState<"all" | "30d" | "7d" | "24h">("all");
 
   const tabsWrapRef = useRef<HTMLDivElement | null>(null);
   const tabRefs = useRef<Record<"volume" | "pnl" | "points", HTMLButtonElement | null>>({
@@ -116,10 +117,26 @@ export default function LeaderboardPage() {
 
           {/* Filters */}
           <div className="mt-4 flex items-center gap-3">
-            <Pill active>All time</Pill>
-            <Pill>30d</Pill>
-            <Pill>7d</Pill>
-            <Pill>24h</Pill>
+            <Pill
+              label="All time"
+              active={timeframe === "all"}
+              onClick={() => setTimeframe("all")}
+            />
+            <Pill
+              label="30d"
+              active={timeframe === "30d"}
+              onClick={() => setTimeframe("30d")}
+            />
+            <Pill
+              label="7d"
+              active={timeframe === "7d"}
+              onClick={() => setTimeframe("7d")}
+            />
+            <Pill
+              label="24h"
+              active={timeframe === "24h"}
+              onClick={() => setTimeframe("24h")}
+            />
           </div>
 
           {/* Top 3 (pixel-based)
@@ -173,17 +190,37 @@ export default function LeaderboardPage() {
   );
 }
 
-function Pill({ children, active }: { children: string; active?: boolean }) {
+function Pill({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active?: boolean;
+  onClick: () => void;
+}) {
   return (
     <button
       type="button"
+      onClick={onClick}
       className={
         active
-          ? "rounded-full bg-[#E96023] px-4 py-2 font-ibm text-[13px] text-white"
-          : "rounded-full bg-white/10 px-4 py-2 font-ibm text-[13px] text-white/85"
+          ? "flex h-[37px] min-w-[73px] items-center justify-center rounded-[32.5px] px-4 font-ibm text-[15px] text-white"
+          : "flex h-[37px] min-w-[73px] items-center justify-center rounded-[32.5px] px-4 font-ibm text-[15px] text-white/85"
+      }
+      style={
+        active
+          ? {
+              background:
+                "linear-gradient(180deg, #45159B 0%, #4E388B 100%) padding-box, " +
+                "linear-gradient(138.53deg, #24233E 3.27%, #6A64FF 20.73%, #13113A 45.42%, #C3C1FB 69.11%, #423F8F 97.18%) border-box",
+              border: "1px solid transparent",
+              boxShadow: "1px 6px 10.4px 0px #948FF2 inset",
+            }
+          : { background: "#FFFFFF1A" }
       }
     >
-      {children}
+      {label}
     </button>
   );
 }
@@ -200,7 +237,14 @@ function PodiumTop3() {
         className="absolute left-[50px] top-[47px] h-[56px] w-[56px] rounded-full border-2 border-white"
         style={{ boxShadow: "0px 3px 30.7px 0px #A10FCAA6" }}
       />
-      <div className="absolute left-[63px] top-[83px] grid h-[30px] w-[30px] place-items-center rounded-full bg-[#A10FCA] font-ibm text-[16px] font-semibold text-white">
+      <div
+        className="absolute left-[63px] top-[83px] grid h-[30px] w-[30px] place-items-center rounded-full font-ibm text-[16px] font-semibold text-white"
+        style={{
+          background:
+            "linear-gradient(#E96023, #E96023) padding-box, linear-gradient(138.53deg, #24233E 3.27%, #6A64FF 20.73%, #13113A 45.42%, #C3C1FB 69.11%, #423F8F 97.18%) border-box",
+          border: "1px solid transparent",
+        }}
+      >
         3
       </div>
       <div className="absolute left-[47px] top-[117px] w-[64px] text-center font-ibm leading-[20px] text-white">
@@ -217,7 +261,14 @@ function PodiumTop3() {
         className="absolute left-[166px] top-[0px] h-[70px] w-[70px] rounded-full border-[4px] border-[#D6A22A]"
         style={{ boxShadow: "0px 3px 30.7px 0px #D6A22A99" }}
       />
-      <div className="absolute left-[186px] top-[55px] grid h-[30px] w-[30px] place-items-center rounded-full bg-[#D6A22A] font-ibm text-[16px] font-semibold text-white">
+      <div
+        className="absolute left-[186px] top-[55px] grid h-[30px] w-[30px] place-items-center rounded-full font-ibm text-[16px] font-semibold text-white"
+        style={{
+          background:
+            "linear-gradient(#D6A22A, #D6A22A) padding-box, linear-gradient(138.53deg, #24233E 3.27%, #6A64FF 20.73%, #13113A 45.42%, #C3C1FB 69.11%, #423F8F 97.18%) border-box",
+          border: "1px solid transparent",
+        }}
+      >
         1
       </div>
       <div className="absolute left-[170px] top-[117px] w-[64px] text-center font-ibm leading-[20px] text-white">
@@ -234,7 +285,14 @@ function PodiumTop3() {
         className="absolute left-[293px] top-[31px] h-[64px] w-[64px] rounded-full border-[3px] border-[#2882D1]"
         style={{ boxShadow: "0px 3px 30.7px 0px #2882D1" }}
       />
-      <div className="absolute left-[310px] top-[78px] grid h-[30px] w-[30px] place-items-center rounded-full bg-[#2882D1] font-ibm text-[16px] font-semibold text-white">
+      <div
+        className="absolute left-[310px] top-[78px] grid h-[30px] w-[30px] place-items-center rounded-full font-ibm text-[16px] font-semibold text-white"
+        style={{
+          background:
+            "linear-gradient(#2882D1, #2882D1) padding-box, linear-gradient(138.53deg, #24233E 3.27%, #6A64FF 20.73%, #13113A 45.42%, #C3C1FB 69.11%, #423F8F 97.18%) border-box",
+          border: "1px solid transparent",
+        }}
+      >
         2
       </div>
       <div className="absolute left-[294px] top-[118px] w-[64px] text-center font-ibm leading-[20px] text-white">

@@ -50,7 +50,7 @@ export default function PortfolioPage() {
   return (
     <div
       className="relative mx-auto min-h-dvh w-full max-w-[402px] overflow-hidden pb-24 text-white"
-      style={{ backgroundColor: "#0F0D3F" }}
+      style={{ backgroundColor: "#131131" }}
     >
       {/* Header card (pixel-based, matching Figma Group 62) */}
       <div className="relative h-[320px]">
@@ -183,13 +183,13 @@ export default function PortfolioPage() {
         </button>
       </div>
 
-      {/* Top tabs (Trades / WatchList) with colored underline like Leaderboard */}
+      {/* Top tabs (Trades / WatchList) with dot + underline like design */}
       <div className="mt-1 px-4">
         <div className="relative w-full pb-3">
           <div
             ref={tabsWrapRef}
-            className="relative flex items-start gap-8"
-            style={{ width: 354, height: 31, marginLeft: 10 }}
+            className="relative flex items-start justify-center gap-8"
+            style={{ height: 31 }}
           >
             <button
               type="button"
@@ -197,13 +197,22 @@ export default function PortfolioPage() {
               ref={(el) => {
                 tabRefs.current.trades = el;
               }}
-              className={
-                topTab === "trades"
-                  ? "font-ibm text-[14px] text-white"
-                  : "font-ibm text-[14px] text-white/45"
-              }
+              className="flex items-center gap-[6px] font-ibm text-[14px]"
             >
-              Trades
+              <span
+                className={
+                  topTab === "trades"
+                    ? "h-[7px] w-[7px] rounded-full bg-[#F19F2B]"
+                    : "h-[7px] w-[7px] rounded-full bg-transparent"
+                }
+              />
+              <span
+                className={
+                  topTab === "trades" ? "text-white" : "text-white/45"
+                }
+              >
+                Trades
+              </span>
             </button>
             <button
               type="button"
@@ -211,13 +220,22 @@ export default function PortfolioPage() {
               ref={(el) => {
                 tabRefs.current.watchlist = el;
               }}
-              className={
-                topTab === "watchlist"
-                  ? "font-ibm text-[14px] text-white"
-                  : "font-ibm text-[14px] text-white/45"
-              }
+              className="flex items-center gap-[6px] font-ibm text-[14px]"
             >
-              WatchList
+              <span
+                className={
+                  topTab === "watchlist"
+                    ? "h-[7px] w-[7px] rounded-full bg-[#F19F2B]"
+                    : "h-[7px] w-[7px] rounded-full bg-transparent"
+                }
+              />
+              <span
+                className={
+                  topTab === "watchlist" ? "text-white" : "text-white/45"
+                }
+              >
+                WatchList
+              </span>
             </button>
 
             {/* Full line: 354px, 1px white @ 20% */}
@@ -311,34 +329,42 @@ function SubPill({
 
 function PositionCardYes() {
   return (
-    <div className="rounded-[18px] bg-white/5 px-5 py-4">
+    <div
+      className="mx-auto w-[380px] px-5 py-4"
+      style={{
+        height: 220,
+        borderRadius: 16,
+        background:
+          "linear-gradient(180deg, #221F54 0%, #131131 100%)",
+      }}
+    >
       <div className="flex items-start justify-between">
         <div>
-          <div className="font-ibm text-[12px] tracking-[0.11em] text-[#49F347]">
+          <div className="font-ibm text-[15px] tracking-[0.11em] text-[#4EBC84]">
             YES POSITION
           </div>
-          <div className="mt-1 font-ibm text-[18px] font-semibold">
+          <div className="mt-1 font-ibm text-[18px] font-semibold text-[#C7E1FF]">
             Bitcoin &gt; $100k?
           </div>
         </div>
         <div className="text-right">
-          <div className="font-ibm text-[14px] text-[#49F347]">+12.00%</div>
-          <div className="font-ibm text-[12px] text-white/40">P&L (Realized)</div>
+          <div className="font-ibm text-[15px] text-[#4EBC84]">+12.00%</div>
+          <div className="font-ibm text-[15px] text-[#8682DF]">P&L (Realized)</div>
         </div>
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-6">
         <div>
-          <div className="font-ibm text-[11px] tracking-[0.11em] text-white/35">
+          <div className="font-ibm text-[15px] tracking-[0.11em] text-[#8682DF]">
             INITIAL STAKE
           </div>
-          <div className="mt-1 font-ibm text-[16px] font-semibold">$100.00</div>
+          <div className="mt-1 font-ibm text-[18px] font-semibold text-[#C7E1FF]">$100.00</div>
         </div>
         <div className="text-right">
-          <div className="font-ibm text-[11px] tracking-[0.11em] text-white/35">
+          <div className="font-ibm text-[15px] tracking-[0.11em] text-[#8682DF]">
             CURRENT VALUE
           </div>
-          <div className="mt-1 font-ibm text-[16px] font-semibold text-[#49F347]">
+          <div className="mt-1 font-ibm text-[15px] font-semibold text-[#4EBC84]">
             $112.00
           </div>
         </div>
@@ -346,7 +372,8 @@ function PositionCardYes() {
 
       <button
         type="button"
-        className="mt-4 h-[44px] w-full rounded-[14px] bg-white/10 font-ibm text-[14px] font-semibold"
+        className="mt-4 mx-auto flex h-[45px] w-[337px] items-center justify-center rounded-[16px] font-ibm text-[17px] font-bold leading-[20px]"
+        style={{ background: "#6761F126", color: "#C7E1FF" }}
       >
         Exit Position
       </button>
@@ -356,34 +383,41 @@ function PositionCardYes() {
 
 function PositionCardNo() {
   return (
-    <div className="rounded-[18px] bg-white/5 px-5 py-4">
+    <div
+      className="mx-auto w-[380px] border border-[#4C4899] px-5 py-4"
+      style={{
+        height: 220,
+        borderRadius: 16,
+        backgroundColor: "#131131",
+      }}
+    >
       <div className="flex items-start justify-between">
         <div>
-          <div className="font-ibm text-[12px] tracking-[0.11em] text-[#E83D36]">
+          <div className="font-ibm text-[15px] tracking-[0.11em] text-[#F45656]">
             NO POSITION
           </div>
-          <div className="mt-1 font-ibm text-[18px] font-semibold">
+          <div className="mt-1 font-ibm text-[18px] font-semibold text-[#FFFFFF]">
             Tesla Earnings Beat?
           </div>
         </div>
         <div className="text-right">
-          <div className="font-ibm text-[14px] text-[#E83D36]">-4.00%</div>
-          <div className="font-ibm text-[12px] text-white/40">P&L (Realized)</div>
+          <div className="font-ibm text-[15px] text-[#F45656]">-4.00%</div>
+          <div className="font-ibm text-[15px] text-[#8682DF]">P&L (Realized)</div>
         </div>
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-6">
         <div>
-          <div className="font-ibm text-[11px] tracking-[0.11em] text-white/35">
+          <div className="font-ibm text-[15px] tracking-[0.11em] text-[#8682DF]">
             INITIAL STAKE
           </div>
-          <div className="mt-1 font-ibm text-[16px] font-semibold">$100.00</div>
+          <div className="mt-1 font-ibm text-[18px] font-semibold text-[#FFFFFF]">$100.00</div>
         </div>
         <div className="text-right">
-          <div className="font-ibm text-[11px] tracking-[0.11em] text-white/35">
+          <div className="font-ibm text-[15px] tracking-[0.11em] text-[#8682DF]">
             CURRENT VALUE
           </div>
-          <div className="mt-1 font-ibm text-[16px] font-semibold text-[#E83D36]">
+          <div className="mt-1 font-ibm text-[15px] font-semibold text-[#F45656]">
             $96.00
           </div>
         </div>
@@ -391,7 +425,8 @@ function PositionCardNo() {
 
       <button
         type="button"
-        className="mt-4 h-[44px] w-full rounded-[14px] bg-white/10 font-ibm text-[14px] font-semibold"
+        className="mt-4 mx-auto flex h-[45px] w-[337px] items-center justify-center rounded-[16px] font-ibm text-[17px] font-bold leading-[20px]"
+        style={{ background: "#6761F126", color: "#C7E1FF" }}
       >
         Exit Position
       </button>
